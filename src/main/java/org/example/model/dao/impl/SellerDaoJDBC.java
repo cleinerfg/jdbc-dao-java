@@ -51,19 +51,8 @@ public class SellerDaoJDBC implements SellerDao {
 
             if (!rs.next()) return null;
 
-            Department dep = Department.builder()
-                    .id(rs.getInt("department_id"))
-                    .name(rs.getString("dep_name"))
-                    .build();
-
-            return Seller.builder()
-                    .id(rs.getInt("id"))
-                    .name(rs.getString("name"))
-                    .email(rs.getString("email"))
-                    .baseSalary(rs.getDouble("base_salary"))
-                    .birthDate(rs.getObject("birth_date", LocalDate.class))
-                    .department(dep)
-                    .build();
+            Department dep = instantiateDepartment(rs);
+            return instantiateSeller(rs, dep);
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
@@ -76,5 +65,23 @@ public class SellerDaoJDBC implements SellerDao {
     @Override
     public List<Seller> findAll() {
         return List.of();
+    }
+
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
+        return Department.builder()
+                .id(rs.getInt("department_id"))
+                .name(rs.getString("dep_name"))
+                .build();
+    }
+
+    private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+        return Seller.builder()
+                .id(rs.getInt("id"))
+                .name(rs.getString("name"))
+                .email(rs.getString("email"))
+                .baseSalary(rs.getDouble("base_salary"))
+                .birthDate(rs.getObject("birth_date", LocalDate.class))
+                .department(dep)
+                .build();
     }
 }
