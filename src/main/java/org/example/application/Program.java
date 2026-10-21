@@ -6,6 +6,7 @@ import org.example.model.dao.SellerDao;
 import org.example.model.entities.Department;
 import org.example.model.entities.Seller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Program {
@@ -25,5 +26,17 @@ public class Program {
         System.out.println("\n==== Seller: findAll ===");
         List<Seller> allSellers = sellerDao.findAll();
         allSellers.forEach(System.out::println);
+
+        System.out.println("\n==== Seller: insert ===");
+        Seller newSeller = Seller.builder()
+                .name("Stefan")
+                .email("stefan@email.com")
+                .birthDate(LocalDate.now())
+                .baseSalary(4500.6)
+                .department(department)
+                .build();
+
+        sellerDao.insert(newSeller);
+        System.out.println("Inserted new seller with id " + newSeller.getId());
     }
 }

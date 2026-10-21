@@ -7,10 +7,7 @@ import org.example.model.dao.SellerDao;
 import org.example.model.entities.Department;
 import org.example.model.entities.Seller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +21,37 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void insert(Seller seller) {
+        PreparedStatement pst = null;
+        try {
+            pst = conn.prepareStatement(
+                    "INSERT INTO sellers (name, email, birth_date, base_salary, department_id) " +
+                            "VALUES (?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
 
+            pst.setString(1, seller.getName());
+            pst.setString(2, seller.getEmail());
+            pst.setObject(3, seller.getBirthDate());
+            pst.setDouble(4, seller.getBaseSalary());
+            pst.setInt(5, seller.getDepartment().getId());
+
+            int rowsAffected = pst.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet rs = pst.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    seller.setId(id);
+                }
+                DB.closeResultSet(rs);
+            } else {
+                throw new DbException("Unexpected error while inserting seller");
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(pst);
+        }
     }
 
     @Override
@@ -150,7 +177,7 @@ public class SellerDaoJDBC implements SellerDao {
             dep = instantiateDepartment(rs);
             map.put(depId, dep);
         }
-        
+
         return dep;
     }
 
