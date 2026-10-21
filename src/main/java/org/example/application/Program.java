@@ -44,5 +44,11 @@ public class Program {
         seller.setName("Martha Waine");
         sellerDao.update(seller);
         System.out.println("Updated seller with id " + seller.getId());
+
+        System.out.println("\n==== Seller: delete ===");
+        IO.print("Enter the seller id to delete: ");
+        int id = Integer.parseInt(IO.readln());
+        sellerDao.deleteById(id);
+        System.out.println("Deleted seller with id " + id);
     }
 }
