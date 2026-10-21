@@ -21,5 +21,9 @@ public class Program {
         Department department = Department.builder().id(2).build();
         List<Seller> sellersByDepartment = sellerDao.findByDepartment(department);
         sellersByDepartment.forEach(System.out::println);
+
+        System.out.println("\n==== Seller: findAll ===");
+        List<Seller> allSellers = sellerDao.findAll();
+        allSellers.forEach(System.out::println);
     }
 }
