@@ -84,12 +84,7 @@ public class SellerDaoJDBC implements SellerDao {
             Map<Integer, Department> map = new HashMap<>();
 
             while (rs.next()) {
-
-                Department dep = map.get(rs.getInt("department_id"));
-                if (dep == null) {
-                    dep = instantiateDepartment(rs);
-                    map.put(rs.getInt("department_id"), dep);
-                }
+                Department dep = instantiateDepartment(rs, map);
                 Seller seller = instantiateSeller(rs, dep);
                 sellers.add(seller);
             }
@@ -123,13 +118,7 @@ public class SellerDaoJDBC implements SellerDao {
             Map<Integer, Department> map = new HashMap<>();
 
             while (rs.next()) {
-
-                Department dep = map.get(rs.getInt("department_id"));
-                if (dep == null) {
-                    dep = instantiateDepartment(rs);
-                    map.put(rs.getInt("department_id"), dep);
-                }
-
+                Department dep = instantiateDepartment(rs, map);
                 Seller seller = instantiateSeller(rs, dep);
                 sellers.add(seller);
             }
@@ -148,6 +137,21 @@ public class SellerDaoJDBC implements SellerDao {
                 .id(rs.getInt("department_id"))
                 .name(rs.getString("dep_name"))
                 .build();
+    }
+
+    private Department instantiateDepartment(ResultSet rs, Map<Integer, Department> map) throws SQLException {
+        int depId = rs.getInt("department_id");
+
+        // Suppress Sonar warning S3824: Map.computeIfAbsent is avoided here because
+        // calling a method throwing checked SQLException inside the lambda requires verbose try-catch wrappers.
+        @SuppressWarnings("squid:S3824")
+        Department dep = map.get(depId);
+        if (dep == null) {
+            dep = instantiateDepartment(rs);
+            map.put(depId, dep);
+        }
+        
+        return dep;
     }
 
     private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
