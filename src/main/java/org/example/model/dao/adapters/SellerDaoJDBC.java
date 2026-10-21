@@ -1,9 +1,9 @@
-package org.example.model.dao.impl;
+package org.example.model.dao.adapters;
 
 import lombok.AllArgsConstructor;
 import org.example.db.DB;
 import org.example.db.DbException;
-import org.example.model.dao.SellerDao;
+import org.example.model.dao.ports.SellerDao;
 import org.example.model.entities.Department;
 import org.example.model.entities.Seller;
 

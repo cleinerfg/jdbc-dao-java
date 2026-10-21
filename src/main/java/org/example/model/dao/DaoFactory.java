@@ -1,7 +1,8 @@
 package org.example.model.dao;
 
 import org.example.db.DB;
-import org.example.model.dao.impl.SellerDaoJDBC;
+import org.example.model.dao.adapters.SellerDaoJDBC;
+import org.example.model.dao.ports.SellerDao;
 
 public class DaoFactory {
 
