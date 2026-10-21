@@ -1,15 +1,14 @@
 package org.example.model.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Getter @Setter
 @ToString
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class Department implements Serializable {
 

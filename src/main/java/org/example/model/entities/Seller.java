@@ -1,9 +1,6 @@
 package org.example.model.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,6 +8,8 @@ import java.util.Objects;
 
 @Getter @Setter
 @ToString
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class Seller implements Serializable {
 
